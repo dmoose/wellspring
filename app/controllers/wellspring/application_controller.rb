@@ -1,7 +1,8 @@
 module Wellspring
   class ApplicationController < ::ApplicationController
-
     before_action :authenticate_admin
+
+    helper Wellspring::MarkdownHelper
 
     protected
 
