@@ -1,22 +1,9 @@
 module Wellspring
-  class ApplicationController < ActionController::Base
-    before_action :authenticate_user
+  class ApplicationController < ::ApplicationController
+
+    before_action :authenticate_admin
 
     protected
-
-    def current_user
-      unless defined?(@current_user)
-        @current_user = instance_eval(&Wellspring.configuration.current_user_lookup)
-      end
-      @current_user
-    end
-    helper_method :current_user
-
-    def authenticate_user
-      return if current_user
-
-      redirect_to instance_eval(&Wellspring.configuration.sign_in_url)
-    end
 
     def content_entries_path
       entries_path(content_class: content_class.tableize)
