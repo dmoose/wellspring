@@ -3,9 +3,20 @@ module Wellspring
     include Wellspring::Concerns::Searchable
 
     scope :published, -> { where('published_at <= ?', Time.zone.now) }
+    scope :any_tags, -> (tags){ where('tags && ARRAY[?]', tags) }
 
     validates :title, presence: true
     validates :slug, uniqueness: { scope: :type, allow_blank: true }
+
+    before_save :create_slug
+
+    def to_param
+      "#{id}-#{slug}"
+    end
+
+    def create_slug
+      self.slug = self.title.parameterize
+    end
 
     def self.content_attr(attr_name, attr_type = :string)
       content_attributes[attr_name] = attr_type
