@@ -18,6 +18,19 @@ module Wellspring
       self.slug = self.title.parameterize
     end
 
+    def tag_list
+      self.tags.join(', ')
+    end
+
+    def tag_list=(new_value)
+      self.tags = new_value.split(',')
+      s1 = Set.new
+      self.tags.each do |val|
+        s1 << val.strip.downcase
+      end
+      self.tags = s1.to_a
+    end
+
     def self.content_attr(attr_name, attr_type = :string)
       content_attributes[attr_name] = attr_type
 
